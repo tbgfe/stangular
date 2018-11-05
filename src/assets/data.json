@@ -1,0 +1,101 @@
+{ "sections":
+  [
+    {
+    "id": "section001",
+    "type":"base",
+    "title": "",
+    "subtitle": "",
+    "can-delete":true,
+    "qs": [
+        {
+        "id": "q0003",
+        "show-if": {
+            "q0001": "Yes",
+            "q0002": "No"
+        },
+        "level": 0,
+        "type": "fieldset",
+        "title": "Have you been a US citizen, by birth or naturalization, on the last day of 2017?",
+        "info": {
+            "type": "MODAL",
+            "title": "Title in case of Modal or Popover",
+            "content": "<img /><h3></h3><p></p>"
+        },
+        "can-skip": true,
+        "fieldset": {
+            "field": {
+                "type": "radio",
+                "label": null,
+                "placeholder": null,
+                "continue": true,
+                "values": {
+                    "1": "Yes",
+                    "2": "No"
+                    },
+                "default": 1,
+                "feedback":"Feedback message",
+                "error": "Error message"
+                }
+            }
+        },
+        {
+            "id": "q0006",
+            "show-if": {},
+            "level": 0,
+            "type": "fieldset",
+            "title": "Do you have a US tax identification number (ITIN/SSN)?   ",
+            "info": {
+                "type": "MODAL",
+                "title": "Title in case of Modal or Popover",
+                "content": "<img /><h3></h3><p></p>"
+                },
+            "can-skip": true,
+            "fieldset": {
+                "id": "fieldset0001",
+                "fields": [
+                    {
+                        "id": "field0001",
+                        "type": "radio",
+                        "label": null,
+                        "placeholder": null,
+                        "values": {
+                            "1": {
+                                "val": "Yes",
+                                "continue": "field0002"
+                            },
+                            "2": {
+                                "val": "No",
+                                "continue": "q0007"
+                            }
+                        },
+                        "default": 1,
+                        "feedback":"Feedback message",
+                        "error": "Error message"
+                    },
+                    {
+                        "id": "field0002",
+                        "type": "text",
+                        "label": "Please enter your ITIN",
+                        "placeholder": null,
+                        "values": {},
+                        "default": null,
+                        "feedback":"Feedback message",
+                        "error": "Error message"
+                    },
+                    {
+                        "id": "field0003",
+                        "type": "button",
+                        "label": null,
+                        "placeholder": null,
+                        "values": {},
+                        "default": null,
+                        "feedback":"Feedback message",
+                        "error": "Error message"
+                    }
+                ]
+                }
+            }
+        ]
+    }
+  ]
+}

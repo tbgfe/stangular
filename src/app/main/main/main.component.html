@@ -1,0 +1,1422 @@
+<main>
+  <div class="container">
+
+      <app-top></app-top>
+
+      <div class="row">
+          <div class="col-12">
+              <div class="the-box">
+                  <div class="title">
+                      <h6>1.2. Current Step</h6>
+                      <ul>
+                          <li><a href="#">supporting link</a></li>
+                          <li><a href="#" data-toggle="modal" data-target="#supportingLink"><i class="material-icons">error_outline</i></a></li>
+                      </ul>
+                      <div class="progress-status">
+                          <div class="circle" [attr.data-progress]="progressPercentage"></div>
+                          <div class="completed"><i class="material-icons">check</i></div>
+                      </div>
+                  </div>
+                  <div class="content">
+
+                      <div class="qs">
+                        <div *ngFor="let question of questionsList">
+                          <div class="q {{question.id}} level-{{question.level}} {{question.status}}" [ngClass]="{valid: question.valid === true}"><!-- add class valid if question.valid == true -->
+                            <div class="q-status"></div>
+                            <div class="q-title">{{ question.title }}</div>
+                            <ul class="q-nav">
+                              <li *ngIf="question.info">
+                                <button class="info" data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li><!-- link modal content to question information - component linking -->
+                              <li *ngIf="question.canSkip">
+                                <button class="skip" data-toggle="tooltip" data-placement="top" title="" data-original-title="Skip this for now" (click)="onSkipClicked()"><i class="material-icons">skip_next</i></button></li>
+                              <li *ngIf="question.status === 'answered'">
+                                <button class="edit" data-toggle="tooltip" data-placement="top" data-original-title="Change your answer"><i class="material-icons">edit</i></button></li>
+                            </ul>
+                            <div class="q-answer"><span class="answer-text">{{question.answer}}</span></div>
+                            <fieldset class="form-group">
+                              <p class="feedback fb-alter">
+                                  <i class="material-icons">flare</i> <strong>Be advised:</strong> Changing this answer may require re-confirming some or all following questions
+                              </p>
+                              <p class="feedback fb-persistent" *ngIf="question.feedback">
+                                  <i class="material-icons">flare</i> {{question.feedback}}
+                              </p>
+                              <div *ngFor="let field of question.fieldset.fields">
+                                <!-- radio field -->
+                                <div class="form-field" *ngIf="field.typeRadio">
+                                  <div class="radio-field">
+                                    <div class="btn-group" data-toggle="buttons">
+                                      <label class="btn btn-rounded btn-md form-check-label continue" *ngFor="let value of field.values | keys; let i = index" (click)="onRadioClicked(value)">
+                                          <input class="form-check-input" type="radio" autocomplete="off" [id]=value.id> {{value.text}}
+                                      </label>
+                                    </div>
+                                  </div>
+                                </div>
+                                <!-- input field -->
+                                <div class="form-field" *ngIf="field.typeInput">
+                                  <div class="input-field">
+                                    <div class="md-form">
+                                      <input type="text" id="form-field-002" class="form-control minw300 selected-answer">
+                                      <label for="form1">{{field.label}}</label>
+                                      <div class="err-text">{{field.error}}</div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <!-- select field -->
+                                <div class="form-field" *ngIf="field.typeSelect">
+                                  <div class="select-field">
+                                    <select class="mdb-select colorful-select dropdown-primary" searchable="Search here.." id="{{field.id}}">
+                                        <option value="{{value.id}}" *ngFor="let value of field.values">{{value.text}}</option>
+                                    </select>
+                                    <label>{{field.label}}</label>
+                                  </div>
+                                </div>
+                                <!-- grid field -->
+                                <div class="field-grid" *ngIf="field.typeGrid">
+                                  <div class="head">
+                                      <div class="row">
+                                        <div *ngFor="let headField of field.valuesHead" [class]="headField.class">
+                                          {{headField.text}}
+                                        </div>
+                                      </div>
+                                  </div>
+                                  <div class="inside">
+                                      <div class="row my-2 field-group" *ngFor="let row of field.rows">
+                                          <div class="col-12 col-xl-7">
+                                            <div class="form-field">
+                                              <div class="select-field">
+                                                <select class="mdb-select colorful-select dropdown-primary" searchable="Search here.." id="form-field-002">
+                                                  <option value="{{option.id}}" *ngFor="let option of row.select">{{option.text}}</option>
+                                                </select>
+                                                <label>&nbsp;</label>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div class="col-5 col-xl-2" *ngFor="let option of row.datepickers">
+                                            <div class="input-field">
+                                              <div class="md-form">
+                                                <input type="text" class="form-control datepicker" placeholder="MM/DD/YYYY">
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div class="col-2 col-xl-1 text-center">
+                                            <a href="#" class="remove">&times;</a>
+                                          </div>
+                                      </div>
+                                      <div class="row">
+                                          <div class="col-12">
+                                            <button class="btn btn-add">Add a visit</button>
+                                          </div>
+                                          <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                      </div>
+                                  </div>
+                              </div>
+                                <!-- continue button -->
+                                <div class="form-field" *ngIf="field.typeButton">
+                                  <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                </div>
+                              </div>
+                            </fieldset>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="qs">
+                          <div class="q q-01-01-01-006 level-0" id="q-006">
+                              <div class="q-status"></div>
+                              <div class="q-title">Please provide details below of all your visits to the US starting from 2015</div>
+                              <ul class="q-nav">
+                                  <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                  <li><button class="skip " data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                  <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                              </ul>
+                              <div class="q-answer"><span class="answer-text"></span></div>
+                              <fieldset class="form-group">
+                                  <p class="feedback fb-persistent">
+                                      <i class="material-icons">flare</i> Your residency status is determined by the complete history of all your visits to the US including any visits as a student, trainee, tourist and all other entries to the US from 1986 onwards.
+                                  </p>
+                                  <div class="field-grid">
+                                      <div class="head">
+                                          <div class="row">
+                                              <div class="col-12 col-lg-7">
+                                                  Visa type / Visitor status
+                                              </div>
+                                              <div class="col-5 col-lg-2">
+                                                  Entered US on
+                                              </div>
+                                              <div class="col-5 col-lg-2">
+                                                  Leaving US on
+                                              </div>
+                                              <div class="col-2 col-lg-1">
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="inside">
+                                          <div class="row my-2 field-group" data-count="1">
+                                              <div class="col-12 col-xl-7">
+                                                  <div class="form-field">
+                                                      <div class="select-field">
+                                                          <select class="mdb-select colorful-select dropdown-primary" searchable="Search here.." id="form-field-002">
+                                                              <option>Visa 1</option>
+                                                              <option>Visa 2</option>
+                                                              <option>Visa 3</option>
+                                                          </select>
+                                                          <label>&nbsp;</label>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <div class="col-5 col-xl-2">
+                                                  <div class="input-field">
+                                                      <div class="md-form">
+                                                          <input placeholder="05/05/2018" type="text" id="date-picker-example" class="form-control datepicker">
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <div class="col-5 col-xl-2">
+                                                  <div class="input-field">
+                                                      <div class="md-form">
+                                                          <input type="text" id="form2" class="form-control datepicker" placeholder="MM/DD/YYYY">
+                                                          <label>&nbsp;</label>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                          <div class="row my-2 field-group" data-count="2">
+                                              <div class="col-12 col-xl-7">
+                                                  <div class="form-field">
+                                                      <div class="select-field">
+                                                          <select class="mdb-select colorful-select dropdown-primary" searchable="Search here.." id="form-field-002">
+                                                              <option>Visa 1</option>
+                                                              <option>Visa 2</option>
+                                                              <option>Visa 3</option>
+                                                          </select>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <div class="col-5 col-xl-2">
+                                                  <div class="input-field">
+                                                      <div class="md-form">
+                                                          <input placeholder="05/05/2018" type="text" id="date-picker-example" class="form-control datepicker">
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <div class="col-5 col-xl-2">
+                                                  <div class="input-field">
+                                                      <div class="md-form">
+                                                          <input type="text" id="form2" class="form-control datepicker" placeholder="MM/DD/YYYY">
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <div class="col-2 col-xl-1 text-center">
+                                                  <a href="#" class="remove">&times;</a>
+                                              </div>
+                                          </div>
+                                          <div class="row">
+                                              <div class="col-12">
+                                                  <button class="btn btn-add">Add a visit</button>
+                                              </div>
+                                              <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <p class="feedback fb-persistent">
+                                      <i class="material-icons">flare</i> Please enter your Visitor Status from your I-20 or DS-2019 in the field above. For more information on your visa or status, <a href="#">click here</a>.
+                                  </p>
+                                  <p class="feedback fb-persistent">
+                                      <i class="material-icons">flare</i> If you’re still in the US you can enter your visa expiry date
+                                  </p>
+                              </fieldset>
+                          </div>
+                      </div>
+                      <div class="qs cards mb-5">
+                          <div class="head">
+                              Jeremy F. Rascal
+                              <small>ITIN Application</small>
+                          </div>
+                          <div class="inside">
+                              <div class="q q-01-01-02-007 level-0" id="q-007">
+                                  <div class="q-status"></div>
+                                  <div class="q-title">Previous US temporaryTaxpayer Identification Number (TIN) or Employer Identification Number (EIN)</div>
+                                  <ul class="q-nav">
+                                      <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                      <li><button class="skip " data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                      <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                                  </ul>
+                                  <div class="q-answer"><span class="answer-text"></span></div>
+                                  <fieldset class="form-group">
+                                      <p class="feedback fb-alter">
+                                          <i class="material-icons">flare</i> <strong>Be advised:</strong> Changing this answer may require re-confirming some or all following questions
+                                      </p>
+                                      <div class="form-field">
+                                          <div class="radio-field">
+                                              <div class="btn-group" data-toggle="buttons">
+                                                  <label class="btn btn-rounded btn-md form-check-label continue">
+                                                      <input class="form-check-input" type="radio"  autocomplete="off"> Yes
+                                                  </label>
+                                                  <label class="btn btn-rounded btn-md form-check-label continue">
+                                                      <input class="form-check-input" type="radio" autocomplete="off"> No
+                                                  </label>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </fieldset>
+                              </div>
+                              <div class="q q-01-01-02-008 level-0 numbers-only" id="q-008">
+                                  <div class="q-status"></div>
+                                  <div class="q-title">Previous TIN or EIN</div>
+                                  <ul class="q-nav">
+                                      <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                      <li><button class="skip " data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                      <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                                  </ul>
+                                  <div class="q-answer"><span class="answer-text"></span></div>
+                                  <fieldset class="form-group">
+                                      <p class="feedback fb-alter">
+                                          <i class="material-icons">flare</i> <strong>Be advised:</strong> Changing this answer may require re-confirming some or all following questions
+                                      </p>
+
+                                      <div class="form-field" >
+                                          <div class="input-field">
+                                              <div class="md-form">
+                                                  <input type="text" id="form-field-002" class="form-control minw300 selected-answer">
+                                                  <label for="form1">Please enter the number</label>
+                                                  <div class="err-text">Only numbers please</div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="form-field">
+                                          <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                      </div>
+                                  </fieldset>
+                              </div>
+                              <div class="q q-01-01-02-009 level-0 text-only" id="q-009">
+                                  <div class="q-status"></div>
+                                  <div class="q-title">Name under which it was issued</div>
+                                  <ul class="q-nav">
+                                      <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                      <li><button class="skip " data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                      <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                                  </ul>
+                                  <div class="q-answer"><span class="answer-text"></span></div>
+                                  <fieldset class="form-group">
+                                      <p class="feedback fb-alter">
+                                          <i class="material-icons">flare</i> <strong>Be advised:</strong> Changing this answer may require re-confirming some or all following questions
+                                      </p>
+                                      <div class="form-field" >
+                                          <div class="input-field">
+                                              <div class="md-form">
+                                                  <input type="text" id="form-field-003" class="form-control minw300 selected-answer">
+                                                  <label for="form1">Please enter the name</label>
+                                                  <div class="err-text">Only characters and spaces</div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="form-field">
+                                          <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                      </div>
+                                  </fieldset>
+                              </div>
+                              <div class="q q-01-01-02-010 level-0" id="q-010">
+                                  <div class="q-help my-3">
+                                      <h5>Identification</h5>
+                                      <p>In order to prove identity and foreign status when applying for an ITIN, the applicant needs to provide either a copy of a valid passport or a combination of two other documents.</p>
+                                      <p>All documents must be valid and current; expired documents will not be accepted.</p>
+                                      <p>If a copy of an applicant's passport provided as a supporting document, the copy must include the <a href="#" class="pop" data-toggle="modal" data-target="#passportPicture">passport picture page</a> and <a href="#" class="pop" data-toggle="modal" data-target="#visaPage">US visa page</a>. If providing a combination of two other documents, one must prove the applicant's 'foreign status' and the other must prove their identity. All copies must be <a href="#" class="pop" data-toggle="modal" data-target="#certified">certified</a> by the issuing agencies of the original document.</p>
+                                  </div>
+                                  <div class="q-status"></div>
+                                  <div class="q-title">Document type</div>
+                                  <ul class="q-nav">
+                                      <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                      <li><button class="skip " data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                      <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                                  </ul>
+                                  <div class="q-answer"><span class="answer-text"></span></div>
+                                  <fieldset class="form-group">
+                                      <p class="feedback fb-alter">
+                                          <i class="material-icons">flare</i> <strong>Be advised:</strong> Changing this answer may require re-confirming some or all following questions
+                                      </p>
+
+                                      <div class="form-field">
+                                          <div class="radio-field">
+                                              <div class="btn-group" data-toggle="buttons">
+                                                  <label class="btn btn-rounded  btn-md form-check-label continue">
+                                                      <input class="form-check-input" type="radio"  autocomplete="off"> Passport
+                                                  </label>
+                                                  <label class="btn btn-rounded btn-md form-check-label continue">
+                                                      <input class="form-check-input" type="radio" autocomplete="off"> Visa
+                                                  </label>
+                                                  <label class="btn btn-rounded btn-md form-check-label continue">
+                                                      <input class="form-check-input" type="radio" autocomplete="off"> Other Document Type
+                                                  </label>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </fieldset>
+                              </div>
+                              <div class="q q-01-01-02-011 level-0" id="q-011">
+                                  <div class="q-status"></div>
+                                  <div class="q-title">Please advise what document can you provide for each type of identification</div>
+                                  <ul class="q-nav">
+                                      <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                      <li><button class="skip " data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                      <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                                  </ul>
+                                  <div class="q-answer"><span class="answer-text"></span></div>
+                                  <fieldset class="form-group">
+                                      <p class="feedback fb-persistent">
+                                          <i class="material-icons">flare</i> Your residency status is determined by the complete history of all your visits to the US including any visits as a student, trainee, tourist and all other entries to the US from 1986 onwards.
+                                      </p>
+                                      <div class="field-grid">
+                                          <div class="head">
+                                              <div class="row">
+                                                  <div class="col-12 col-lg-8">
+                                                      Supporting Documentation
+                                                  </div>
+                                                  <div class="col-6 col-lg-2 text-center">
+                                                      Foreign Status
+                                                  </div>
+                                                  <div class="col-6 col-lg-2 text-center">
+                                                      Identity
+                                                  </div>
+                                              </div>
+                                          </div>
+                                          <div class="inside">
+                                              <div class="row my-2 field-group">
+                                                  <div class="col-12 col-lg-8">
+                                                      Visa issued by U.S. Department of State
+                                                  </div>
+                                                  <div class="col-6 col-lg-2 text-center">
+                                                      <div class="form-check">
+                                                          <input name="102" type="radio" class="form-check-input with-gap" id="radio107">
+                                                          <label class="form-check-label" for="radio107"></label>
+                                                      </div>
+                                                  </div>
+                                                  <div class="col-6 col-lg-2 text-center">
+                                                      <div class="form-check">
+                                                          <input name="103" type="radio" class="form-check-input with-gap" id="radio108">
+                                                          <label class="form-check-label" for="radio108"></label>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <div class="row my-2 field-group">
+                                                  <div class="col-12 col-lg-8">
+                                                      National identification card (must be current and contain name, photograph, address, date of birth, and expiration date)
+                                                  </div>
+                                                  <div class="col-6 col-lg-2 text-center">
+                                                      <div class="form-check">
+                                                          <input name="102" type="radio" class="form-check-input with-gap" id="radio109">
+                                                          <label class="form-check-label" for="radio109"></label>
+                                                      </div>
+                                                  </div>
+                                                  <div class="col-6 col-lg-2 text-center">
+                                                      <div class="form-check">
+                                                          <input name="103" type="radio" class="form-check-input with-gap" id="radio110">
+                                                          <label class="form-check-label" for="radio110"></label>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <div class="row my-2 field-group">
+                                                  <div class="col-12 col-lg-8">
+                                                      Civil birth certificate
+                                                  </div>
+                                                  <div class="col-6 col-lg-2 text-center">
+                                                      <div class="form-check">
+                                                          <input name="102" type="radio" class="form-check-input with-gap" id="radio111">
+                                                          <label class="form-check-label" for="radio111"></label>
+                                                      </div>
+                                                  </div>
+                                                  <div class="col-6 col-lg-2 text-center">
+                                                      <div class="form-check">
+                                                          <input name="103" type="radio" class="form-check-input with-gap" id="radio112">
+                                                          <label class="form-check-label" for="radio112"></label>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <div class="row my-2 field-group">
+                                                  <div class="col-12 col-lg-8">
+                                                      Medical Records (valid only for dependents under age 14 (under age 18 * if a student)
+                                                  </div>
+                                                  <div class="col-6 col-lg-2 text-center">
+                                                      <div class="form-check">
+                                                          <input name="102" type="radio" class="form-check-input with-gap" id="radio113">
+                                                          <label class="form-check-label" for="radio113"></label>
+                                                      </div>
+                                                  </div>
+                                                  <div class="col-6 col-lg-2 text-center">
+                                                      <div class="form-check">
+                                                          <input name="103" type="radio" class="form-check-input with-gap" id="radio114">
+                                                          <label class="form-check-label" for="radio114"></label>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <div class="row my-2 field-group">
+                                                  <div class="col-12 col-lg-8">
+                                                      School Records (valid only for dependents under age 14 * (under age 18 if a student))
+                                                  </div>
+                                                  <div class="col-6 col-lg-2 text-center">
+                                                      <div class="form-check">
+                                                          <input name="102" type="radio" class="form-check-input with-gap" id="radio115">
+                                                          <label class="form-check-label" for="radio115"></label>
+                                                      </div>
+                                                  </div>
+                                                  <div class="col-6 col-lg-2 text-center">
+                                                      <div class="form-check">
+                                                          <input name="103" type="radio" class="form-check-input with-gap" id="radio116">
+                                                          <label class="form-check-label" for="radio116"></label>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <div class="row">
+                                                  <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <p class="feedback fb-persistent">
+                                          <i class="material-icons">flare</i> Please enter your Visitor Status from your I-20 or DS-2019 in the field above. For more information on your visa or status, <a href="#">click here</a>.
+                                      </p>
+                                      <p class="feedback fb-persistent">
+                                          <i class="material-icons">flare</i> If you’re still in the US you can enter your visa expiry date
+                                      </p>
+                                  </fieldset>
+                              </div>
+                              <div class="q q-01-01-02-012 level-0 any-input" id="q-012">
+                                  <div class="q-status"></div>
+                                  <div class="q-title">Document details</div>
+                                  <ul class="q-nav">
+                                      <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                      <li><button class="skip " data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                      <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                                  </ul>
+                                  <div class="q-answer"><span class="answer-text"></span></div>
+                                  <fieldset class="form-group">
+                                      <p class="feedback fb-alter">
+                                          <i class="material-icons">flare</i> <strong>Be advised:</strong> Changing this answer may require re-confirming some or all following questions
+                                      </p>
+                                      <div class="row">
+                                          <div class="form-field col-lg-2" >
+                                              <div class="input-field">
+                                                  <div class="md-form">
+                                                      <input placeholder="e.g. 123456789" type="text" id="form-field-004" class="form-control selected-answer">
+                                                      <label for="form-field-004">Document Number</label>
+                                                      <div class="err-text">Only numbers please</div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                          <div class="form-field col-lg-2">
+                                              <div class="input-field">
+                                                  <div class="md-form">
+                                                      <input placeholder="05/05/2018" type="text" id="date-picker-example" class="form-control datepicker">
+                                                      <label for="form1">Expires on</label>
+                                                      <div class="err-text">Enter a valid date please</div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                          <div class="form-field col-lg-3">
+                                              <div class="select-field">
+                                                  <select class="mdb-select colorful-select dropdown-primary" searchable="Search here.." id="form-field-002">
+                                                      <option>Visa 1</option>
+                                                      <option>Visa 2</option>
+                                                      <option>Visa 3</option>
+                                                  </select>
+                                                  <label>Please select your visa</label>
+                                                  <div class="err-text">Enter a valid date please</div>
+                                              </div>
+                                          </div>
+                                          <div class="form-field col-lg-2">
+                                              <div class="input-field">
+                                                  <div class="md-form">
+                                                      <input placeholder="MM/DD/YYYY" type="text" id="date-picker-example" class="form-control datepicker">
+                                                      <label for="form1">Entry to the US</label>
+                                                      <div class="err-text">Enter a valid date please</div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                          <div class="form-field col-lg-1">
+                                              <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                          </div>
+                                      </div>
+                                  </fieldset>
+                              </div>
+                          </div>
+                          <div class="foot">
+                              <div class="row">
+                                  <div class="col-12 col-md-6">
+                                      <button class="btn btn-add mr-4">Save Application</button>
+                                      <a href="#">Discard Changes</a>
+                                  </div>
+                                  <div class="col-12 col-md-6 delete">
+                                      <a href="#">Delete Application</a>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="qs forms">
+                          <div class="q q-01-01-01-014 level-0 can-skip numbers-only active" id="q-014">
+                              <div class="q-status"></div>
+                              <div class="q-title"><sup>b</sup> Employer identification number (EIN)</div>
+                              <ul class="q-nav">
+                                  <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                  <li><button class="skip" data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                  <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                              </ul>
+                              <div class="q-answer"><span class="answer-text"></span></div>
+                              <fieldset class="form-group">
+                                  <p class="feedback fb-alter">
+                                      <i class="material-icons">flare</i> <strong>Be advised:</strong> Changing this answer may require re-confirming some or all following questions
+                                  </p>
+                                  <div class="form-field" >
+                                      <div class="input-field">
+                                          <div class="md-form">
+                                              <input type="text" id="form-field-002" class="form-control minw300 selected-answer">
+                                              <label for="form1">Please enter the number</label>
+                                              <div class="err-text">Only numbers please</div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="form-field">
+                                      <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                  </div>
+                              </fieldset>
+                          </div>
+                          <div class="q q-01-01-01-015 level-0 can-skip text-only" id="q-015">
+                              <div class="q-status"></div>
+                              <div class="q-title"><sup>c</sup> Employer's Name</div>
+                              <ul class="q-nav">
+                                  <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                  <li><button class="skip" data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                  <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                              </ul>
+                              <div class="q-answer"><span class="answer-text"></span></div>
+                              <fieldset class="form-group">
+                                  <p class="feedback fb-alter">
+                                      <i class="material-icons">flare</i> <strong>Be advised:</strong> Changing this answer may require re-confirming some or all following questions
+                                  </p>
+                                  <div class="form-field" >
+                                      <div class="input-field">
+                                          <div class="md-form">
+                                              <input type="text" id="form-field-003" class="form-control minw300 selected-answer">
+                                              <label for="form1">Please enter the name</label>
+                                              <div class="err-text">Only characters and spaces</div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="form-field">
+                                      <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                  </div>
+                              </fieldset>
+                          </div>
+                          <div class="q q-01-01-01-016 level-0 can-skip any-input" id="q-016">
+                              <div class="q-status"></div>
+                              <div class="q-title"><sup>c</sup> Employer's Address</div>
+                              <ul class="q-nav">
+                                  <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                  <li><button class="skip" data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                  <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                              </ul>
+                              <div class="q-answer"><span class="answer-text"></span></div>
+                              <fieldset class="form-group">
+                                  <p class="feedback fb-alter">
+                                      <i class="material-icons">flare</i> <strong>Be advised:</strong> Changing this answer may require re-confirming some or all following questions
+                                  </p>
+                                  <div class="form-field" >
+                                      <div class="input-field">
+                                          <div class="md-form">
+                                              <input type="text" id="form-field-044" class="form-control minw300 selected-answer">
+                                              <label for="form-field-044">Please enter the address</label>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="form-field">
+                                      <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                  </div>
+                              </fieldset>
+                          </div>
+                          <div class="q q-01-01-01-017 level-0 can-skip numbers-only" id="q-017">
+                              <div class="q-status"></div>
+                              <div class="q-title"><sup>c</sup> Employer's ZIP code</div>
+                              <ul class="q-nav">
+                                  <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                  <li><button class="skip" data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                  <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                              </ul>
+                              <div class="q-answer"><span class="answer-text"></span></div>
+                              <fieldset class="form-group">
+                                  <p class="feedback fb-alter">
+                                      <i class="material-icons">flare</i> <strong>Be advised:</strong> Changing this answer may require re-confirming some or all following questions
+                                  </p>
+                                  <div class="form-field" >
+                                      <div class="input-field">
+                                          <div class="md-form">
+                                              <input type="text" id="form-field-002" class="form-control minw300 selected-answer">
+                                              <label for="form1">Please enter the code</label>
+                                              <div class="err-text">Only numbers please</div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="form-field">
+                                      <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                  </div>
+                              </fieldset>
+                          </div>
+                          <div class="q q-01-01-01-024 level-0 can-skip numbers-only" id="q-024">
+                              <div class="q-status"></div>
+                              <div class="q-title"><sup>1</sup> Wages, Tips, Other Compensation</div>
+                              <ul class="q-nav">
+                                  <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                  <li><button class="skip" data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                  <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                              </ul>
+                              <div class="q-answer"><span class="answer-text"></span></div>
+                              <fieldset class="form-group">
+                                  <p class="feedback fb-alter">
+                                      <i class="material-icons">flare</i> <strong>Be advised:</strong> Changing this answer may require re-confirming some or all following questions
+                                  </p>
+                                  <div class="form-field" >
+                                      <div class="input-field">
+                                          <div class="md-form">
+                                              <input type="text" id="form-field-005" class="form-control minw300 selected-answer">
+                                              <label for="form1">Please provide the figure from your W2</label>
+                                              <div class="err-text">Only numbers please</div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="form-field">
+                                      <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                  </div>
+                              </fieldset>
+                          </div>
+                          <div class="q q-01-01-01-025 level-0 can-skip numbers-only" id="q-025">
+                              <div class="q-status"></div>
+                              <div class="q-title"><sup>2</sup> Federal income tax withheld</div>
+                              <ul class="q-nav">
+                                  <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                  <li><button class="skip" data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                  <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                              </ul>
+                              <div class="q-answer"><span class="answer-text"></span></div>
+                              <fieldset class="form-group">
+                                  <p class="feedback fb-alter">
+                                      <i class="material-icons">flare</i> <strong>Be advised:</strong> Changing this answer may require re-confirming some or all following questions
+                                  </p>
+                                  <div class="form-field" >
+                                      <div class="input-field">
+                                          <div class="md-form">
+                                              <input type="text" id="form-field-006" class="form-control minw300 selected-answer">
+                                              <label for="form1">Please provide the figure from your W2</label>
+                                              <div class="err-text">Only numbers please</div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="form-field">
+                                      <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                  </div>
+                              </fieldset>
+                          </div>
+                          <div class="q q-01-01-01-026 level-0 can-skip numbers-only" id="q-026">
+                              <div class="q-status"></div>
+                              <div class="q-title"><sup>3</sup> Social security wages</div>
+                              <ul class="q-nav">
+                                  <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                  <li><button class="skip" data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                  <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                              </ul>
+                              <div class="q-answer"><span class="answer-text"></span></div>
+                              <fieldset class="form-group">
+                                  <p class="feedback fb-alter">
+                                      <i class="material-icons">flare</i> <strong>Be advised:</strong> Changing this answer may require re-confirming some or all following questions
+                                  </p>
+                                  <div class="form-field" >
+                                      <div class="input-field">
+                                          <div class="md-form">
+                                              <input type="text" id="form-field-011" class="form-control minw300 selected-answer">
+                                              <label for="form1">Please provide the figure from your W2</label>
+                                              <div class="err-text">Only numbers please</div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="form-field">
+                                      <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                  </div>
+                              </fieldset>
+                          </div>
+                          <div class="q q-01-01-01-027 level-0 can-skip numbers-only" id="q-027">
+                              <div class="q-status"></div>
+                              <div class="q-title"><sup>4</sup> Social security tax withheld</div>
+                              <ul class="q-nav">
+                                  <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                  <li><button class="skip" data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                  <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                              </ul>
+                              <div class="q-answer"><span class="answer-text"></span></div>
+                              <fieldset class="form-group">
+                                  <p class="feedback fb-alter">
+                                      <i class="material-icons">flare</i> <strong>Be advised:</strong> Changing this answer may require re-confirming some or all following questions
+                                  </p>
+                                  <div class="form-field" >
+                                      <div class="input-field">
+                                          <div class="md-form">
+                                              <input type="text" id="form-field-012" class="form-control minw300 selected-answer">
+                                              <label for="form1">Please provide the figure from your W2</label>
+                                              <div class="err-text">Only numbers please</div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="form-field">
+                                      <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                  </div>
+                              </fieldset>
+                          </div>
+                          <div class="q q-01-01-01-028 level-0 can-skip numbers-only" id="q-028">
+                              <div class="q-status"></div>
+                              <div class="q-title"><sup>5</sup> Medicare wages and tips</div>
+                              <ul class="q-nav">
+                                  <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                  <li><button class="skip" data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                  <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                              </ul>
+                              <div class="q-answer"><span class="answer-text"></span></div>
+                              <fieldset class="form-group">
+                                  <p class="feedback fb-alter">
+                                      <i class="material-icons">flare</i> <strong>Be advised:</strong> Changing this answer may require re-confirming some or all following questions
+                                  </p>
+                                  <div class="form-field" >
+                                      <div class="input-field">
+                                          <div class="md-form">
+                                              <input type="text" id="form-field-013" class="form-control minw300 selected-answer">
+                                              <label for="form1">Please provide the figure from your W2</label>
+                                              <div class="err-text">Only numbers please</div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="form-field">
+                                      <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                  </div>
+                              </fieldset>
+                          </div>
+                          <div class="q q-01-01-01-029 level-0 can-skip numbers-only" id="q-029">
+                              <div class="q-status"></div>
+                              <div class="q-title"><sup>6</sup> Medicare tax withheld</div>
+                              <ul class="q-nav">
+                                  <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                  <li><button class="skip" data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                  <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                              </ul>
+                              <div class="q-answer"><span class="answer-text"></span></div>
+                              <fieldset class="form-group">
+                                  <p class="feedback fb-alter">
+                                      <i class="material-icons">flare</i> <strong>Be advised:</strong> Changing this answer may require re-confirming some or all following questions
+                                  </p>
+                                  <div class="form-field" >
+                                      <div class="input-field">
+                                          <div class="md-form">
+                                              <input type="text" id="form-field-016" class="form-control minw300 selected-answer">
+                                              <label for="form1">Please provide the figure from your W2</label>
+                                              <div class="err-text">Only numbers please</div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="form-field">
+                                      <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                  </div>
+                              </fieldset>
+                          </div>
+                          <div class="q q-01-01-01-035 level-0 can-skip numbers-only" id="q-035">
+                              <div class="q-status"></div>
+                              <div class="q-title"><sup>12a</sup> Uncollected Social Security or RRTA tax on tips</div>
+                              <ul class="q-nav">
+                                  <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                  <li><button class="skip" data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                  <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                              </ul>
+                              <div class="q-answer"><span class="answer-text"></span></div>
+                              <fieldset class="form-group">
+                                  <p class="feedback fb-alter">
+                                      <i class="material-icons">flare</i> <strong>Be advised:</strong> Changing this answer may require re-confirming some or all following questions
+                                  </p>
+                                  <div class="form-field complex">
+                                      <div class="select-field">
+                                          <select class="mdb-select colorful-select dropdown-primary" searchable="Search here.." id="form-field-0021">
+                                              <option></option>
+                                              <option value="C">C</option>
+                                              <option value="D">D</option>
+                                              <option value="E">E</option>
+                                              <option value="F">F</option>
+                                              <option value="G">G</option>
+                                              <option value="S">S</option>
+                                              <option value="H">H</option>
+                                              <option value="J">J</option>
+                                              <option value="P">P</option>
+                                              <option value="DD">DD</option>
+                                              <option value="R">R</option>
+                                              <option value="W">W</option>
+                                              <option value="Other">Other</option>
+                                          </select>
+                                          <label>Please select type</label>
+                                      </div>
+                                      <div class="input-field">
+                                          <div class="md-form">
+                                              <input type="text" id="form-field-0221" class="form-control minw300 selected-answer">
+                                              <label for="form1">Please provide the figure from your W2</label>
+                                              <div class="err-text">Only numbers please</div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="form-field">
+                                      <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                  </div>
+                              </fieldset>
+                          </div>
+                          <div class="q q-01-01-01-036 level-0 can-skip numbers-only" id="q-036">
+                              <div class="q-status"></div>
+                              <div class="q-title"><sup>12b</sup> Uncollected Medicare tax or RRTA tax on tips</div>
+                              <ul class="q-nav">
+                                  <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                  <li><button class="skip" data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                  <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                              </ul>
+                              <div class="q-answer"><span class="answer-text"></span></div>
+                              <fieldset class="form-group">
+                                  <p class="feedback fb-alter">
+                                      <i class="material-icons">flare</i> <strong>Be advised:</strong> Changing this answer may require re-confirming some or all following questions
+                                  </p>
+                                  <div class="form-field complex">
+                                      <div class="select-field">
+                                          <select class="mdb-select colorful-select dropdown-primary" searchable="Search here.." id="form-field-0022">
+                                              <option></option>
+                                              <option value="C">C</option>
+                                              <option value="D">D</option>
+                                              <option value="E">E</option>
+                                              <option value="F">F</option>
+                                              <option value="G">G</option>
+                                              <option value="S">S</option>
+                                              <option value="H">H</option>
+                                              <option value="J">J</option>
+                                              <option value="P">P</option>
+                                              <option value="DD">DD</option>
+                                              <option value="R">R</option>
+                                              <option value="W">W</option>
+                                              <option value="Other">Other</option>
+                                          </select>
+                                          <label>Please select type</label>
+                                      </div>
+                                      <div class="input-field">
+                                          <div class="md-form">
+                                              <input type="text" id="form-field-0222" class="form-control minw300 selected-answer">
+                                              <label for="form1">Please provide the figure from your W2</label>
+                                              <div class="err-text">Only numbers please</div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="form-field">
+                                      <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                  </div>
+                              </fieldset>
+                          </div>
+                          <div class="q q-01-01-01-037 level-0 can-skip numbers-only" id="q-037">
+                              <div class="q-status"></div>
+                              <div class="q-title"><sup>12c</sup> Taxable cost of group-term life insurance over $50,000</div>
+                              <ul class="q-nav">
+                                  <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                  <li><button class="skip" data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                  <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                              </ul>
+                              <div class="q-answer"><span class="answer-text"></span></div>
+                              <fieldset class="form-group">
+                                  <p class="feedback fb-alter">
+                                      <i class="material-icons">flare</i> <strong>Be advised:</strong> Changing this answer may require re-confirming some or all following questions
+                                  </p>
+                                  <div class="form-field complex">
+                                      <div class="select-field">
+                                          <select class="mdb-select colorful-select dropdown-primary" searchable="Search here.." id="form-field-0023">
+                                              <option></option>
+                                              <option value="C">C</option>
+                                              <option value="D">D</option>
+                                              <option value="E">E</option>
+                                              <option value="F">F</option>
+                                              <option value="G">G</option>
+                                              <option value="S">S</option>
+                                              <option value="H">H</option>
+                                              <option value="J">J</option>
+                                              <option value="P">P</option>
+                                              <option value="DD">DD</option>
+                                              <option value="R">R</option>
+                                              <option value="W">W</option>
+                                              <option value="Other">Other</option>
+                                          </select>
+                                          <label>Please select type</label>
+                                      </div>
+                                      <div class="input-field">
+                                          <div class="md-form">
+                                              <input type="text" id="form-field-0223" class="form-control minw300 selected-answer">
+                                              <label for="form1">Please provide the figure from your W2</label>
+                                              <div class="err-text">Only numbers please</div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="form-field">
+                                      <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                  </div>
+                              </fieldset>
+                          </div>
+                          <div class="q q-01-01-01-038 level-0 can-skip numbers-only" id="q-038">
+                              <div class="q-status"></div>
+                              <div class="q-title"><sup>12d</sup> Elective deferrals under a section 401(k) cash or deferred arrangement plan (including a SIMPLE 401(k) arrangement)</div>
+                              <ul class="q-nav">
+                                  <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                  <li><button class="skip" data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                  <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                              </ul>
+                              <div class="q-answer"><span class="answer-text"></span></div>
+                              <fieldset class="form-group">
+                                  <p class="feedback fb-alter">
+                                      <i class="material-icons">flare</i> <strong>Be advised:</strong> Changing this answer may require re-confirming some or all following questions
+                                  </p>
+                                  <div class="form-field complex">
+                                      <div class="select-field">
+                                          <select class="mdb-select colorful-select dropdown-primary" searchable="Search here.." id="form-field-0024">
+                                              <option></option>
+                                              <option value="C">C</option>
+                                              <option value="D">D</option>
+                                              <option value="E">E</option>
+                                              <option value="F">F</option>
+                                              <option value="G">G</option>
+                                              <option value="S">S</option>
+                                              <option value="H">H</option>
+                                              <option value="J">J</option>
+                                              <option value="P">P</option>
+                                              <option value="DD">DD</option>
+                                              <option value="R">R</option>
+                                              <option value="W">W</option>
+                                              <option value="Other">Other</option>
+                                          </select>
+                                          <label>Please select type</label>
+                                      </div>
+                                      <div class="input-field">
+                                          <div class="md-form">
+                                              <input type="text" id="form-field-0224" class="form-control minw300 selected-answer">
+                                              <label for="form1">Please provide the figure from your W2</label>
+                                              <div class="err-text">Only numbers please</div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="form-field">
+                                      <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                  </div>
+                              </fieldset>
+                          </div>
+                          <div class="q q-01-01-01-040 level-0 can-skip numbers-only" id="q-040">
+                              <div class="q-status"></div>
+                              <div class="q-title"><sup>14</sup> Other</div>
+                              <ul class="q-nav">
+                                  <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                  <li><button class="skip" data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                  <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                              </ul>
+                              <div class="q-answer"><span class="answer-text"></span></div>
+                              <fieldset class="form-group">
+                                  <p class="feedback fb-alter">
+                                      <i class="material-icons">flare</i> <strong>Be advised:</strong> Changing this answer may require re-confirming some or all following questions
+                                  </p>
+                                  <div class="form-field complex">
+                                      <div class="select-field">
+                                          <select class="mdb-select colorful-select dropdown-primary" searchable="Search here.." id="form-field-0021">
+                                              <option></option>
+                                              <option value="S">State/local disability insurance tax</option>
+                                              <option value="T">Tuition/Tuition waiver</option>
+                                              <option value="O">Other payments</option>
+                                          </select>
+                                      </div>
+                                      <div class="input-field">
+                                          <div class="md-form">
+                                              <input type="text" id="form-field-0221" class="form-control minw300 selected-answer">
+                                              <label for="form1">Please provide the figure from your W2</label>
+                                              <div class="err-text">Only numbers please</div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="form-field">
+                                      <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                  </div>
+                              </fieldset>
+                          </div>
+                          <div class="q q-01-01-01-041 level-0 can-skip select-only" id="q-041">
+                              <div class="q-status"></div>
+                              <div class="q-title"><sup>15</sup> State</div>
+                              <ul class="q-nav">
+                                  <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                  <li><button class="skip" data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                  <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                              </ul>
+                              <div class="q-answer"><span class="answer-text"></span></div>
+                              <fieldset class="form-group">
+                                  <p class="feedback fb-alter">
+                                      <i class="material-icons">flare</i> <strong>Be advised:</strong> Changing this answer may require re-confirming some or all following questions
+                                  </p>
+                                  <div class="form-field">
+                                      <div class="select-field">
+                                          <select class="mdb-select colorful-select dropdown-primary" searchable="Search here.." id="form-field-002">
+                                              <option></option>
+                                              <option value="AL">AL</option>
+                                              <option value="AK">AK</option>
+                                              <option value="AZ">AZ</option>
+                                              <option value="AR">AR</option>
+                                              <option value="CA">CA</option>
+                                              <option value="CO">CO</option>
+                                              <option value="CT">CT</option>
+                                              <option value="DE">DE</option>
+                                              <option value="FL">FL</option>
+                                              <option value="GA">GA</option>
+                                              <option value="HI">HI</option>
+                                              <option value="ID">ID</option>
+                                              <option value="IL">IL</option>
+                                              <option value="IN">IN</option>
+                                              <option value="IA">IA</option>
+                                              <option value="KS">KS</option>
+                                              <option value="KY">KY</option>
+                                              <option value="LA">LA</option>
+                                              <option value="ME">ME</option>
+                                              <option value="MD">MD</option>
+                                              <option value="MA">MA</option>
+                                              <option value="MI">MI</option>
+                                              <option value="MN">MN</option>
+                                              <option value="MS">MS</option>
+                                              <option value="MO">MO</option>
+                                              <option value="MT">MT</option>
+                                              <option value="NE">NE</option>
+                                              <option value="NV">NV</option>
+                                              <option value="NH">NH</option>
+                                              <option value="NJ">NJ</option>
+                                              <option value="NM">NM</option>
+                                              <option value="NY">NY</option>
+                                              <option value="NC">NC</option>
+                                              <option value="ND">ND</option>
+                                              <option value="OH">OH</option>
+                                              <option value="OK">OK</option>
+                                              <option value="OR">OR</option>
+                                              <option value="PA">PA</option>
+                                              <option value="RI">RI</option>
+                                              <option value="SC">SC</option>
+                                              <option value="SD">SD</option>
+                                              <option value="TN">TN</option>
+                                              <option value="TX">TX</option>
+                                              <option value="UT">UT</option>
+                                              <option value="VT">VT</option>
+                                              <option value="VA">VA</option>
+                                              <option value="WA">WA</option>
+                                              <option value="WV">WV</option>
+                                              <option value="WI">WI</option>
+                                              <option value="WY">WY</option>
+                                          </select>
+                                          <label>Please select your state</label>
+                                      </div>
+                                  </div>
+                                  <div class="form-field">
+                                      <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                  </div>
+                              </fieldset>
+                          </div>
+                          <div class="q q-01-01-01-042 level-0 can-skip numbers-only" id="q-042">
+                              <div class="q-status"></div>
+                              <div class="q-title"><sup>15</sup> Employer's state ID number</div>
+                              <ul class="q-nav">
+                                  <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                  <li><button class="skip" data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                  <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                              </ul>
+                              <div class="q-answer"><span class="answer-text"></span></div>
+                              <fieldset class="form-group">
+                                  <p class="feedback fb-alter">
+                                      <i class="material-icons">flare</i> <strong>Be advised:</strong> Changing this answer may require re-confirming some or all following questions
+                                  </p>
+                                  <div class="form-field" >
+                                      <div class="input-field">
+                                          <div class="md-form">
+                                              <input type="text" id="form-field-027" class="form-control minw300 selected-answer">
+                                              <label for="form1">Please provide the figure from your W2</label>
+                                              <div class="err-text">Only numbers please</div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="form-field">
+                                      <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                  </div>
+                              </fieldset>
+                          </div>
+                          <div class="q q-01-01-01-043 level-0 can-skip numbers-only" id="q-043">
+                              <div class="q-status"></div>
+                              <div class="q-title"><sup>16</sup> State wages, tips, etc.</div>
+                              <ul class="q-nav">
+                                  <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                  <li><button class="skip" data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                  <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                              </ul>
+                              <div class="q-answer"><span class="answer-text"></span></div>
+                              <fieldset class="form-group">
+                                  <p class="feedback fb-alter">
+                                      <i class="material-icons">flare</i> <strong>Be advised:</strong> Changing this answer may require re-confirming some or all following questions
+                                  </p>
+                                  <div class="form-field" >
+                                      <div class="input-field">
+                                          <div class="md-form">
+                                              <input type="text" id="form-field-028" class="form-control minw300 selected-answer">
+                                              <label for="form1">Please provide the figure from your W2</label>
+                                              <div class="err-text">Only numbers please</div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="form-field">
+                                      <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                  </div>
+                              </fieldset>
+                          </div>
+                          <div class="q q-01-01-01-044 level-0 can-skip numbers-only" id="q-044">
+                              <div class="q-status"></div>
+                              <div class="q-title"><sup>17</sup> State income tax</div>
+                              <ul class="q-nav">
+                                  <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                  <li><button class="skip" data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                  <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                              </ul>
+                              <div class="q-answer"><span class="answer-text"></span></div>
+                              <fieldset class="form-group">
+                                  <p class="feedback fb-alter">
+                                      <i class="material-icons">flare</i> <strong>Be advised:</strong> Changing this answer may require re-confirming some or all following questions
+                                  </p>
+                                  <div class="form-field" >
+                                      <div class="input-field">
+                                          <div class="md-form">
+                                              <input type="text" id="form-field-029" class="form-control minw300 selected-answer">
+                                              <label for="form1">Please provide the figure from your W2</label>
+                                              <div class="err-text">Only numbers please</div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="form-field">
+                                      <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                  </div>
+                              </fieldset>
+                          </div>
+                          <div class="q q-01-01-01-045 level-0 can-skip numbers-only" id="q-045">
+                              <div class="q-status"></div>
+                              <div class="q-title"><sup>18</sup> Local wages, tips, etc.</div>
+                              <ul class="q-nav">
+                                  <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                  <li><button class="skip" data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                  <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                              </ul>
+                              <div class="q-answer"><span class="answer-text"></span></div>
+                              <fieldset class="form-group">
+                                  <p class="feedback fb-alter">
+                                      <i class="material-icons">flare</i> <strong>Be advised:</strong> Changing this answer may require re-confirming some or all following questions
+                                  </p>
+                                  <div class="form-field" >
+                                      <div class="input-field">
+                                          <div class="md-form">
+                                              <input type="text" id="form-field-030" class="form-control minw300 selected-answer">
+                                              <label for="form1">Please provide the figure from your W2</label>
+                                              <div class="err-text">Only numbers please</div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="form-field">
+                                      <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                  </div>
+                              </fieldset>
+                          </div>
+                          <div class="q q-01-01-01-046 level-0 can-skip numbers-only" id="q-046">
+                              <div class="q-status"></div>
+                              <div class="q-title"><sup>19</sup> Local income tax</div>
+                              <ul class="q-nav">
+                                  <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                  <li><button class="skip" data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                  <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                              </ul>
+                              <div class="q-answer"><span class="answer-text"></span></div>
+                              <fieldset class="form-group">
+                                  <p class="feedback fb-alter">
+                                      <i class="material-icons">flare</i> <strong>Be advised:</strong> Changing this answer may require re-confirming some or all following questions
+                                  </p>
+                                  <div class="form-field" >
+                                      <div class="input-field">
+                                          <div class="md-form">
+                                              <input type="text" id="form-field-031" class="form-control minw300 selected-answer">
+                                              <label for="form1">Please provide the figure from your W2</label>
+                                              <div class="err-text">Only numbers please</div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="form-field">
+                                      <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                  </div>
+                              </fieldset>
+                          </div>
+                          <div class="q q-01-01-01-047 level-0 can-skip text-only" id="q-047">
+                              <div class="q-status"></div>
+                              <div class="q-title"><sup>20</sup> Locality name</div>
+                              <ul class="q-nav">
+                                  <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                  <li><button class="skip" data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                  <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                              </ul>
+                              <div class="q-answer"><span class="answer-text"></span></div>
+                              <fieldset class="form-group">
+                                  <p class="feedback fb-alter">
+                                      <i class="material-icons">flare</i> <strong>Be advised:</strong> Changing this answer may require re-confirming some or all following questions
+                                  </p>
+                                  <div class="form-field" >
+                                      <div class="input-field">
+                                          <div class="md-form">
+                                              <input type="text" id="form-field-032" class="form-control minw300 selected-answer">
+                                              <label for="form1">Please provide the name</label>
+                                              <div class="err-text">Only letters please</div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="form-field">
+                                      <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                  </div>
+                              </fieldset>
+                          </div>
+                      </div>
+                      <div class="qs maps">
+                          <div class="q q-01-01-01-048 level-0 can-skip active" id="q-048">
+                              <div class="q-status"></div>
+                              <div class="q-title">Home address</div>
+                              <ul class="q-nav">
+                                  <li><button class="info " data-toggle="modal" data-target="#moreInfo"><i class="material-icons">info</i></button></li>
+                                  <li><button class="skip" data-toggle="tooltip" data-placement="top" title="" data-original-title="You can skip this for now"><i class="material-icons">skip_next</i></button></li>
+                                  <li><button class="edit "><i class="material-icons">edit</i></button></li>
+                              </ul>
+                              <div class="q-answer"><span class="answer-text"></span></div>
+                              <fieldset class="form-group">
+                                  <p class="feedback fb-alter">
+                                      <i class="material-icons">flare</i> <strong>Be advised:</strong> Changing this answer may require re-confirming some or all following questions
+                                  </p>
+                                  <div class="form-field">
+                                      <div id="locationField">
+                                          <input id="autocomplete" placeholder="Enter your address"
+                                                  onFocus="geolocate()" type="text" />
+                                      </div>
+                                      <div class="address-field" id="address">
+                                          <div class="row">
+                                              <div class="col-1">
+                                                  <div class="input-field">
+                                                      <div class="md-form">
+                                                          <input type="text" id="street_number" class="form-control" placeholder=" ">
+                                                          <label for="street_number">Street N</label>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <div class="col-2">
+                                                  <div class="input-field">
+                                                      <div class="md-form">
+                                                          <input type="text" class="form-control" id="route" placeholder=" " />
+                                                          <label for="route">Street</label>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <div class="col-2">
+                                                  <div class="input-field">
+                                                      <div class="md-form">
+                                                          <input type="text" id="locality" class="form-control" placeholder=" ">
+                                                          <label for="form1">City</label>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <div class="col-2">
+                                                  <div class="input-field">
+                                                      <div class="md-form">
+                                                          <input type="text" id="administrative_area_level_1" class="form-control" placeholder=" ">
+                                                          <label>State</label>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <div class="col-2">
+                                                  <div class="input-field">
+                                                      <div class="md-form">
+                                                          <input type="text" id="postal_code" class="form-control" placeholder=" ">
+                                                          <label for="form1">Post Code</label>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <div class="col-2">
+                                                  <div class="input-field">
+                                                      <div class="md-form">
+                                                          <input type="text" id="country" class="form-control selected-answer" placeholder=" ">
+                                                          <label>Country</label>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <div class="col-1">
+                                                  <button class="btn done continue"><i class="material-icons">done_outline</i></button>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </fieldset>
+                          </div>
+                      </div>
+                      <div class="form-sample w2 hidden">
+                          <div class="title">
+                              <h2>W-2 Form Sample</h2>
+                              <p class="tip">You can drag the form below to reveal obscured areas</p>
+                          </div>
+                          <div class="draggable-form">
+                              <div class="contain">
+                                  <img src="assets/img/form-w2.png" alt="w2 form">
+                                  <div class="highlight q-014"><span></span></div><!-- b -->
+                                  <div class="highlight q-015"><span></span></div><!-- c -->
+                                  <div class="highlight q-016"><span></span></div><!-- c -->
+                                  <div class="highlight q-017"><span></span></div><!-- c -->
+                                  <div class="highlight q-024"><span></span></div><!-- 1 -->
+                                  <div class="highlight q-025"><span></span></div><!-- 2 -->
+                                  <div class="highlight q-026"><span></span></div><!-- 3 -->
+                                  <div class="highlight q-027"><span></span></div><!-- 4 -->
+                                  <div class="highlight q-028"><span></span></div><!-- 5 -->
+                                  <div class="highlight q-029"><span></span></div><!-- 6 -->
+                                  <div class="highlight q-035">
+                                      <span class="ammount"></span>
+                                      <span class="type"></span>
+                                  </div><!-- 12a -->
+                                  <div class="highlight q-036">
+                                      <span class="ammount"></span>
+                                      <span class="type"></span>
+                                  </div><!-- 12b -->
+                                  <div class="highlight q-037">
+                                      <span class="ammount"></span>
+                                      <span class="type"></span>
+                                  </div><!-- 12c -->
+                                  <div class="highlight q-038">
+                                      <span class="ammount"></span>
+                                      <span class="type"></span>
+                                  </div><!-- 12d -->
+                                  <div class="highlight q-040">
+                                      <span class="ammount"></span>
+                                      <span class="type"></span>
+                                  </div><!-- 14 -->
+                                  <div class="highlight q-041"><span></span></div><!-- 15 -->
+                                  <div class="highlight q-042"><span></span></div><!-- 15 -->
+                                  <div class="highlight q-043"><span></span></div><!-- 16 -->
+                                  <div class="highlight q-044"><span></span></div><!-- 17 -->
+                                  <div class="highlight q-045"><span></span></div><!-- 18 -->
+                                  <div class="highlight q-046"><span></span></div><!-- 19 -->
+                                  <div class="highlight q-047"><span></span></div><!-- 20 -->
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="foot">
+                      <ul>
+                          <li><a href="#">FAQ</a></li>
+                          <li><a href="#">Ask Stacy</a></li>
+                          <li><a href="#">Call us</a></li>
+                      </ul>
+                      <p class="buttons">
+                          <a href="#" class="btn prev"><i class="material-icons">arrow_back</i> <span>Previous section</span></a>
+                          <a href="#" class="btn next disabled">Save &amp; continue <i class="material-icons">arrow_forward</i></a>
+                      </p>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</main>
