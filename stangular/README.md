@@ -1,2 +1,0 @@
-# stangular
-Sprintax Angular
